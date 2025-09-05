@@ -5,6 +5,8 @@ from users.views import UserViewSet
 from books.views import BookViewSet
 from checkout.views import CheckoutViewSet
 from django.http import HttpResponse
+from django.shortcuts import render
+
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -12,11 +14,15 @@ router.register(r'books', BookViewSet)
 router.register(r'checkout', CheckoutViewSet)
 
 def home(request):
-    return HttpResponse("<h1>📚 Welcome to the Library System API</h1><p>Use <a href='/api/'>/api/</a> to explore endpoints.</p>")
+    return render(request,"home.html")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include(router.urls)),
-    path("", home),
+    path("api/", include(router.urls)),       # API endpoints
+    path("users/", include("users.urls")),    # Users frontend
+    path("books/", include("books.urls")),    # Books frontend
+    path("checkout/", include("checkout.urls")),  # Checkout frontend
+    path("", home, name="home")
 ]
+
 

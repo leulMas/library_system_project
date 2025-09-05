@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkouts List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 40px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .link-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .link-container a {
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .link-container a:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 80%;
+            margin: 0 auto 30px auto;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border-bottom: 1px solid #ccc;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            margin-right: 10px;
+            transition: color 0.3s ease;
+        }
+
+        td a:hover {
+            color: #0056b3;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Checkouts</h1>
+
+    <div class="link-container">
+        <a href="new/">Add New Checkout</a>
+        <a href="/">Back to Home</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Book</th>
+            <th>Checkout Date</th>
+            <th>Return Date</th>
+            <th>Actions</th>
+        </tr>
+        {% for checkout in checkouts %}
+        <tr>
+            <td>{{ checkout.user.username }}</td>
+            <td>{{ checkout.book.title }}</td>
+            <td>{{ checkout.checkout_date }}</td>
+            <td>{{ checkout.return_date }}</td>
+            <td>
+                <a href="edit/{{ checkout.id }}/">Edit</a>
+                <a href="delete/{{ checkout.id }}/">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="no-data">No checkouts found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
