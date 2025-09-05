@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 
 class CheckoutViewSet(viewsets.ModelViewSet):
     queryset = Checkout.objects.all()
-    serializers_class = CheckoutSerializer
+    serializer_class = CheckoutSerializer
     
     @action(detail=True, methods=['post'])
     def return_book(self, request, pk=None):
