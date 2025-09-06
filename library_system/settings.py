@@ -134,3 +134,6 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
 }
+LOGIN_REDIRECT_URL = "/checkout/"
+LOGOUT_REDIRECT_URL = '/'
+

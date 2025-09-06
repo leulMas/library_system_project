@@ -6,6 +6,7 @@ from books.views import BookViewSet
 from checkout.views import CheckoutViewSet
 from django.http import HttpResponse
 from django.shortcuts import render
+from users import views as user_views
 
 
 router = routers.DefaultRouter()
@@ -18,6 +19,8 @@ def home(request):
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("signup/", user_views.signup, name="signup"),
+    path("accounts/", include("django.contrib.auth.urls")),
     path("api/", include(router.urls)),       # API endpoints
     path("users/", include("users.urls")),    # Users frontend
     path("books/", include("books.urls")),    # Books frontend

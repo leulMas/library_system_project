@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% if checkout %}Edit{% else %}Add New{% endif %} Checkout</title>
+    <title>Admin Signup</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,7 +16,7 @@
         }
 
         form {
-            max-width: 500px;
+            max-width: 400px;
             margin: 0 auto;
             background-color: white;
             padding: 30px;
@@ -30,9 +30,8 @@
             font-weight: bold;
         }
 
-        select,
         input[type="text"],
-        input[type="datetime-local"] {
+        input[type="password"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -57,7 +56,7 @@
         }
 
         .messages {
-            max-width: 500px;
+            max-width: 400px;
             margin: 0 auto 20px auto;
         }
 
@@ -80,7 +79,7 @@
 
         .link-container {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .link-container a {
@@ -91,7 +90,6 @@
             color: white;
             font-weight: bold;
             transition: background-color 0.3s ease;
-            margin: 0 5px;
         }
 
         .link-container a:hover {
@@ -100,9 +98,8 @@
     </style>
 </head>
 <body>
-    <h1>{% if checkout %}Edit{% else %}Add New{% endif %} Checkout</h1>
+    <h1>Admin Signup</h1>
 
-    <!-- Messages -->
     {% if messages %}
     <div class="messages">
         {% for message in messages %}
@@ -113,46 +110,25 @@
 
     <form method="post">
         {% csrf_token %}
+        {{ form.non_field_errors }}
+        
+        <label for="id_username">Username:</label>
+        {{ form.username }}
 
-        <label>User:</label>
-        <select name="user" required>
-            <option value="">-- Select User --</option>
-            {% for user in users %}
-                <option value="{{ user.id }}" {% if checkout and checkout.user.id == user.id %}selected{% endif %}>
-                    {{ user.username }}
-                </option>
-            {% endfor %}
-        </select>
+        <label for="id_password1">Password:</label>
+        {{ form.password1 }}
 
-        <label>Book:</label>
-        <select name="book" required>
-            <option value="">-- Select Book --</option>
-            {% for book in books %}
-                {% if book.available_copies > 0 %}
-                    <option value="{{ book.id }}" {% if checkout and checkout.book.id == book.id %}selected{% endif %}>
-                        {{ book.title }} ({{ book.available_copies }} available)
-                    </option>
-                {% else %}
-                    <option value="{{ book.id }}" disabled>
-                        {{ book.title }} (Out of Stock)
-                    </option>
-                {% endif %}
-            {% endfor %}
-        </select>
+        <label for="id_password2">Confirm Password:</label>
+        {{ form.password2 }}
 
-        <label>Checkout Date:</label>
-        <input type="datetime-local" name="checkout_date"
-               value="{% if checkout %}{{ checkout.checkout_date|date:'Y-m-d\TH:i' }}{% endif %}" required>
+        <label for="secret_code">Secret Code:</label>
+        <input type="text" name="secret_code" required placeholder="Admin secret code">
 
-        <label>Return Date:</label>
-        <input type="datetime-local" name="return_date"
-               value="{% if checkout %}{{ checkout.return_date|date:'Y-m-d\TH:i' }}{% endif %}" required>
-
-        <button type="submit">Save</button>
+        <button type="submit">Sign Up</button>
     </form>
 
     <div class="link-container">
-        <a href="{% url 'checkout_list' %}">Back to Checkout List</a>
+        <a href="{% url 'login' %}">Back to Login</a>
     </div>
 </body>
 </html>

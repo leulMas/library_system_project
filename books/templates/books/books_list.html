@@ -74,6 +74,16 @@
         a.action-link:hover {
             text-decoration: underline;
         }
+
+        .status-available {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-unavailable {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +100,9 @@
             <th>Title</th>
             <th>Author</th>
             <th>Published Date</th>
+            <th>Total Copies</th>
+            <th>Available Copies</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
         {% for book in books %}
@@ -98,6 +111,15 @@
             <td>{{ book.title }}</td>
             <td>{{ book.author }}</td>
             <td>{{ book.published_date }}</td>
+            <td>{{ book.total_copies }}</td>
+            <td>{{ book.available_copies }}</td>
+            <td>
+                {% if book.available_copies > 0 %}
+                    <span class="status-available">✔ In Stock</span>
+                {% else %}
+                    <span class="status-unavailable">✘ Out of Stock</span>
+                {% endif %}
+            </td>
             <td>
                 <a href="{% url 'books_edit' book.id %}" class="action-link">Edit</a>
                 <a href="{% url 'books_delete' book.id %}" class="action-link">Delete</a>

@@ -12,7 +12,29 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+
+        .messages {
+            max-width: 80%;
+            margin: 0 auto 20px auto;
+        }
+
+        .messages p {
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .messages p.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .messages p.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
         .link-container {
@@ -77,10 +99,41 @@
             color: #777;
             font-style: italic;
         }
+
+        /* ✅ Logout Button Style */
+        .logout-btn {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #a71d2a;
+        }
+
+        .logout-container {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <h1>Checkouts</h1>
+
+    <!-- Messages Section -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <div class="link-container">
         <a href="new/">Add New Checkout</a>
@@ -90,7 +143,9 @@
     <table>
         <tr>
             <th>User</th>
+            <th>Email</th>
             <th>Book</th>
+            <th>Available Copies</th>
             <th>Checkout Date</th>
             <th>Return Date</th>
             <th>Actions</th>
@@ -98,19 +153,32 @@
         {% for checkout in checkouts %}
         <tr>
             <td>{{ checkout.user.username }}</td>
+            <td>{{ checkout.user.email }}</td>
             <td>{{ checkout.book.title }}</td>
+            <td>
+                {% if checkout.book.available_copies > 0 %}
+                    {{ checkout.book.available_copies }}
+                {% else %}
+                    Out of Stock
+                {% endif %}
+            </td>
             <td>{{ checkout.checkout_date }}</td>
             <td>{{ checkout.return_date }}</td>
             <td>
                 <a href="edit/{{ checkout.id }}/">Edit</a>
                 <a href="delete/{{ checkout.id }}/">Delete</a>
+                <a href="return/{{ checkout.id }}/">Return</a>
             </td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="5" class="no-data">No checkouts found.</td>
+            <td colspan="7" class="no-data">No checkouts found.</td>
         </tr>
         {% endfor %}
     </table>
+
+    <div class="logout-container">
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
 </body>
 </html>
